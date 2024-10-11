@@ -112,4 +112,15 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Allow/disallow registration
+    |--------------------------------------------------------------------------
+    |
+    | Here you can set whether this app allows users to register or not
+    |
+    */
+
+    'allow_registration' => env('ALLOW_USER_REGISTRATION', false),
+
 ];
