@@ -17,4 +17,7 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        manifest: true,  // This will generate the manifest file
+    },
 });
