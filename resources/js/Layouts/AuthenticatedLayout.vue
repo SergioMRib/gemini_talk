@@ -39,6 +39,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    :href="route('gemini.index')"
+                                    :active="route().current('gemini.index')"
+                                >
+                                    Gemini
+                                </NavLink>
                             </div>
                         </div>
 

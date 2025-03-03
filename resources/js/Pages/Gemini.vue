@@ -53,8 +53,9 @@ const submitForm = () => {
                             <form @submit.prevent="submitForm">
                                 <div>
                                     <label for="question">Question</label>
-                                    <input
+                                    <textarea
                                     v-model="form.question"
+                                    rows="5"
                                     class="input bg-white border-primary block mt-2 w-full max-w-2xl"
                                     type="text"
                                     id="question"
