@@ -40,7 +40,9 @@ class GeminiService
 
         // USING GUZZLE HHTP
         $client = new Client();
+//dd(config('services.gemini.api_key'), $this->apiUrl);
         $response = $client->post($this->apiUrl, [
+            'query' => ['key' => config('services.gemini.api_key')],
             'json' => $payload // Payload to send to the API
         ]);
 
