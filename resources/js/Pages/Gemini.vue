@@ -30,7 +30,7 @@ const submitForm = () => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Gemini" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -47,7 +47,7 @@ const submitForm = () => {
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                        Let's ask gemini
+                        Let's ask gemini lots of questions
                         <div class="mt-4">
 
                             <form @submit.prevent="submitForm">
