@@ -2,6 +2,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+defineProps({
+    'logs': Array,
+    'notes': Array
+})
 
 // Initialize the form
 const form = useForm({
@@ -64,9 +68,23 @@ const submitForm = () => {
 
                         </div>
                         <div class="mt-4">
-                            <p v-if="response">{{response}}</p>
+                            <p>Notes list</p>
+                            <ul>
+                                <li v-for="note in notes" :key="note.id">
+                                    {{ note.title }} <br>
+                                    {{ note.description }}
+                                </li>
+                            </ul>
                         </div>
 
+                        <div class="mt-4">
+                            <p>Ask gemini logs</p>
+                            <ul>
+                                <li v-for="note in logs" :key="note.id">
+                                    {{ note.from_human ? 'Human: ' : 'Gemini: ' }}{{ note.log_entry }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

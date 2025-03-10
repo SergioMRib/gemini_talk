@@ -60,7 +60,11 @@ class GeminiController extends Controller
     }
 
     public function create() {
-        return Inertia::render('AskGemini');
+        return Inertia::render('AskGemini',
+            [
+                'logs' => AskGeminiLog::all(),
+                'notes' => Note::all()
+            ]);
     }
 
     public function store(BasePromptService $basePromptService, Request $request) {
