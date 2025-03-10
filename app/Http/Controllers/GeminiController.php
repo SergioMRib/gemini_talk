@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AskGeminiLog;
 use App\Models\Conversation;
+use App\Models\Note;
 use Illuminate\Http\Request;
 use App\Services\GeminiService;
+use App\Services\BasePromptService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -54,5 +57,44 @@ class GeminiController extends Controller
         ]);
 
         return redirect()->route('gemini.index');
+    }
+
+    public function create() {
+        return Inertia::render('AskGemini');
+    }
+
+    public function store(BasePromptService $basePromptService, Request $request) {
+
+        $validated = $request->validate([
+            'question' => 'required',
+        ]);
+
+        // Send the request using the service
+        $response = $this->geminiService->sendContent($basePromptService->getPrompt() . " " . $request->question);
+
+        $start = strpos($response, '{');
+        $end = strpos($response, '}');
+        $json = substr($response, $start, $end + 1 - $start);
+        $responseArray = json_decode($json, true);
+//dd($response, $start, $end, $json, json_decode($json, true));
+
+        if($responseArray['type'] == 'note') {
+            Note::create($responseArray);
+        }
+        if($responseArray['type'] == 'event') {
+
+        }
+
+        AskGeminiLog::create([
+            'log_entry' => $request->question,
+            'from_human' => true
+        ]);
+
+        AskGeminiLog::create([
+            'log_entry' => $json,
+            'from_human' => false
+        ]);
+
+        return redirect()->back()->with('success', 'Response created');
     }
 }

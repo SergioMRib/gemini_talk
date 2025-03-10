@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/gemini', [GeminiController::class, 'index'])->name('gemini.index');
     Route::post('/gemini', [GeminiController::class, 'send'])->name('gemini.send');
 
+    Route::get('/ask-gemini', [GeminiController::class, 'create'])->name('gemini.create');
+    Route::post('/ask-gemini', [GeminiController::class, 'store'])->name('gemini.store');
 });
 
 require __DIR__.'/auth.php';

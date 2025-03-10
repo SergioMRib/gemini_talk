@@ -45,6 +45,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Gemini
                                 </NavLink>
+                                <NavLink
+                                    :href="route('gemini.create')"
+                                    :active="route().current('gemini.create')"
+                                >
+                                    Ask Gemini
+                                </NavLink>
                             </div>
                         </div>
 
