@@ -19,4 +19,6 @@ yarn-error.log
 /.vscode
 /.zed
 /app/service-account.json
+.DS_Store
+storage/.DS_Store
 service-account.json

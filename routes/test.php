@@ -7,5 +7,5 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-Route::get('/create-event', [TestController::class, 'store'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/create-event', [TestController::class, 'store'])->middleware(['auth', 'verified'])->name('test-create-event');
 
