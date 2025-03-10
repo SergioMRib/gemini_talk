@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GeminiController;
 use Illuminate\Foundation\Application;
@@ -29,6 +30,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/ask-gemini', [GeminiController::class, 'create'])->name('gemini.create');
     Route::post('/ask-gemini', [GeminiController::class, 'store'])->name('gemini.store');
+
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/test.php';

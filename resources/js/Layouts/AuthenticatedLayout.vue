@@ -51,6 +51,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Ask Gemini
                                 </NavLink>
+                                <NavLink
+                                    :href="route('calendar.index')"
+                                    :active="route().current('calendar.index')"
+                                >
+                                    Calendar
+                                </NavLink>
                             </div>
                         </div>
 

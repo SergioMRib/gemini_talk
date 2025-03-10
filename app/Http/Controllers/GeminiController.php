@@ -8,6 +8,7 @@ use App\Models\Note;
 use Illuminate\Http\Request;
 use App\Services\GeminiService;
 use App\Services\BasePromptService;
+use App\Services\NewEventGoogleCalendarService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -17,10 +18,12 @@ class GeminiController extends Controller
 {
 
     protected $geminiService;
+    protected $newEventService;
 
-    public function __construct(GeminiService $geminiService)
+    public function __construct(GeminiService $geminiService, NewEventGoogleCalendarService $newEventService)
     {
         $this->geminiService = $geminiService;
+        $this->newEventService = $newEventService;
     }
 
 
@@ -62,7 +65,7 @@ class GeminiController extends Controller
     public function create() {
         return Inertia::render('AskGemini',
             [
-                'logs' => AskGeminiLog::all(),
+                'logs' => AskGeminiLog::orderBy('created_at', 'desc')->get(),
                 'notes' => Note::all()
             ]);
     }
@@ -86,7 +89,13 @@ class GeminiController extends Controller
             Note::create($responseArray);
         }
         if($responseArray['type'] == 'event') {
+            $eventLink = $this->newEventService->createEvent(
+                $responseArray['title'],
+                $responseArray['description'],
+                $responseArray['startAt'],
+                $responseArray['endAt']);
 
+            $json = $json . " Event link: " . $eventLink;
         }
 
         AskGeminiLog::create([
