@@ -31,7 +31,6 @@ class GeminiController extends Controller
 
         $conversations = Conversation::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
 
-//dd($conversations);
         return inertia::render('Gemini', [
             'conversation' => $conversations
         ]);

@@ -18,6 +18,8 @@ export default defineConfig({
         }),
     ],
     build: {
-        manifest: true,  // This will generate the manifest file
+        manifest: true,
+        outDir: 'public/build', // Ensure this is correctly set
+        emptyOutDir: true, // Cleans up old files on build
     },
 });
