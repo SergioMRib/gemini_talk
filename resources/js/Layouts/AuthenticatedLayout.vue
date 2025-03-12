@@ -52,6 +52,12 @@ const showingNavigationDropdown = ref(false);
                                     Ask Gemini
                                 </NavLink>
                                 <NavLink
+                                    :href="route('tell.index')"
+                                    :active="route().current('tell.index')"
+                                >
+                                    Tell me Gemini
+                                </NavLink>
+                                <NavLink
                                     :href="route('calendar.index')"
                                     :active="route().current('calendar.index')"
                                 >
@@ -163,6 +169,30 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('gemini.index')"
+                            :active="route().current('gemini.index')"
+                        >
+                            Gemini
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('gemini.create')"
+                            :active="route().current('gemini.create')"
+                        >
+                            Ask Gemini
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('tell.index')"
+                            :active="route().current('tell.index')"
+                        >
+                            Tell me Gemini
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('calendar.index')"
+                            :active="route().current('calendar.index')"
+                        >
+                            Calendar
                         </ResponsiveNavLink>
                     </div>
 

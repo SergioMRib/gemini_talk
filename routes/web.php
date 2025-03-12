@@ -3,6 +3,7 @@
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GeminiController;
+use App\Http\Controllers\TellGeminiController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/ask-gemini', [GeminiController::class, 'store'])->name('gemini.store');
 
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+
+    Route::get('/tell-gemini', [TellGeminiController::class, 'index'])->name('tell.index');
+    Route::post('/tell-gemini', [TellGeminiController::class, 'getFromGemini'])->name('tell.get-from-gemini');
 });
 
 require __DIR__.'/auth.php';
