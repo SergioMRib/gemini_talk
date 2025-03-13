@@ -22,4 +22,7 @@ export default {
         forms,
         require('daisyui')
     ],
+    daisyui: {
+        themes: ["lofi"],
+  },
 };

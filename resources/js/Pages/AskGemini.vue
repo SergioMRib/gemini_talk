@@ -15,6 +15,13 @@ const form = useForm({
 // Function to submit the form
 const submitForm = () => {
     console.log(form.question);
+
+    form.question = form.question.trim();
+    if(form.question.length === 0){
+        form.errors.question = "Invalid submission";
+        return
+    }
+
     form.post(route('gemini.store'), {
         onSuccess: () => {
             console.log('Form submitted successfully')
@@ -61,27 +68,29 @@ const submitForm = () => {
                                     <span v-if="form.errors.question" class="text-red-500">{{ form.errors.question }}</span>
                                 </div>
 
-                                <button class="btn btn-primary mt-2" type="submit" :disabled="form.processing">
+                                <button class="btn btn-primary mt-2  " type="submit" :disabled="form.processing || (form.question.trim()).length === 0">
                                     Send
                                 </button>
                             </form>
 
                         </div>
-                        <div class="mt-4">
-                            <p>Notes list</p>
-                            <ul>
-                                <li v-for="note in notes" :key="note.id">
+                        <div class="mt-4 border-2 border-neutral-900 rounded-t-lg overflow-x-auto">
+                            <!--------   -->
+                            <p class="text-sm py-3 font-semibold pl-4 pr-3 sm:pl-6 text-left">My notes</p>
+                            <ul class="">
+                                <li v-for="note in notes" :key="note.id" class=" py-2 font-semibold pl-4 pr-3 sm:pl-6 text-left">
                                     {{ note.title }} <br>
-                                    {{ note.description }}
+                                    <p class="font-light text-sm">{{ note.description }}</p>
                                 </li>
                             </ul>
                         </div>
 
-                        <div class="mt-4">
-                            <p>Ask gemini logs</p>
+                        <div class="mt-4 border-2 border-neutral-900 rounded-t-lg overflow-x-auto">
+                            <p class="text-sm py-3 font-semibold pl-4 pr-3 sm:pl-6 text-left">Interaction logs</p>
                             <ul>
-                                <li v-for="note in logs" :key="note.id">
-                                    {{ note.from_human ? 'Human: ' : 'Gemini: ' }}{{ note.log_entry }}
+                                <li v-for="note in logs" :key="note.id" class=" py-2  pl-4 pr-3 sm:pl-6 text-left">
+                                    <span class="text-sm">{{ note.from_human ? 'Human' : 'Gemini' }}</span>
+                                    <p class="font-semibold">{{ note.log_entry }}</p>
                                 </li>
                             </ul>
                         </div>

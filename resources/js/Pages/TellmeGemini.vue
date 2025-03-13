@@ -1,18 +1,39 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+const props = defineProps({
+    geminiResponse: {
+        type: String,
+        required: false
+    },
+});
 // Initialize the form
 const form = useForm({
   question: '',
 })
 
+let responsesArray = ref([])
+
+onMounted(() => {
+    if(props.geminiResponse) {
+        responsesArray.value.push(props.geminiResponse);
+    }
+});
+
 // Function to submit the form
 const submitForm = () => {
     console.log(form.question);
+    form.question = form.question.trim();
+    if(form.question.length === 0){
+        form.errors.question = "Invalid submission";
+        return
+    }
     form.post(route('tell.get-from-gemini'), {
+        preserveState: true,
         onSuccess: () => {
-            console.log('Form submitted successfully')
+            responsesArray.value = [...responsesArray.value, props.geminiResponse];
             form.question = ""
         },
         onError: (errors) => {
@@ -56,12 +77,18 @@ const submitForm = () => {
                                     <span v-if="form.errors.question" class="text-red-500">{{ form.errors.question }}</span>
                                 </div>
 
-                                <button class="btn btn-primary mt-2" type="submit" :disabled="form.processing">
+                                <button class="btn btn-primary mt-2" type="submit" :disabled="form.processing || (form.question.trim()).length === 0">
                                     Send
                                 </button>
                             </form>
 
                         </div>
+
+                        <ul>
+                            <li v-for="response, index in responsesArray" :key="index">
+                                {{ index }} - {{response}}
+                            </li>
+                        </ul>
 
                     </div>
                 </div>
