@@ -5,16 +5,16 @@ import { Link } from '@inertiajs/vue3';
 
 <template>
     <div
-        class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0"
+        class="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-black dark:bg-black dark:text-white"
     >
-        <div>
-            <Link href="/">
-                <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
-            </Link>
-        </div>
 
+        <img
+            id="background"
+            class="absolute z-0 -left-20 top-0 max-w-[877px] opacity-50"
+            src="https://laravel.com/assets/img/welcome/background.svg"
+        />
         <div
-            class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
+            class="mt-6 w-full z-10 overflow-hidden px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
         >
             <slot />
         </div>

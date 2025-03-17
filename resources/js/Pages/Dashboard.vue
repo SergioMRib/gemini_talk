@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -20,9 +20,9 @@ import { Head } from '@inertiajs/vue3';
                 <div
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
-                    <div class="p-6 text-gray-900">
-                        You're logged in!
-                    </div>
+                    <Link :href="route('tell.index')" class="block btn btn-info m-5">Ask about your stuff</Link>
+                    <Link :href="route('gemini.create')" class="block btn btn-warning m-5">Note down on gemini</Link>
+                    <Link :href="route('gemini.index')" class="block btn btn-error m-5">Ask any question</Link>
                 </div>
             </div>
         </div>

@@ -46,6 +46,7 @@ class GeminiService
             'json' => $payload // Payload to send to the API
         ]);
 
+//dd($response);
         // Decode the JSON response into an associative array
         $responseData = json_decode($response->getBody()->getContents(), true);
 
