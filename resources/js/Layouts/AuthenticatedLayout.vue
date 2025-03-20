@@ -53,6 +53,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Calendar
                                 </NavLink>
+                                <NavLink
+                                    :href="route('files.create')"
+                                    :active="route().current('files.create')"
+                                >
+                                    Files
+                                </NavLink>
                             </div>
                         </div>
 

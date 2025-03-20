@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GeminiController;
 use App\Http\Controllers\TellGeminiController;
@@ -36,6 +37,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/tell-gemini', [TellGeminiController::class, 'index'])->name('tell.index');
     Route::post('/tell-gemini', [TellGeminiController::class, 'getFromGemini'])->name('tell.get-from-gemini');
+
+    Route::get('/place-file-form', [FileController::class, 'create'])->name('files.create');
+    Route::post('/place-file-form', [FileController::class, 'store'])->name('files.store');
+    Route::delete('/place-file-form/{file}', [FileController::class, 'destroy'])->name('files.destroy');
+
+    Route::get('/see-all-files', [FileController::class, 'allFiles'])->name('files.see-all-files');
 });
 
 require __DIR__.'/auth.php';

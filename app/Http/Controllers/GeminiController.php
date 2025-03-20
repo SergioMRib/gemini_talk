@@ -29,7 +29,7 @@ class GeminiController extends Controller
 
     public function index(Request $request) {
 
-        $conversations = Conversation::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $conversations = Conversation::where('user_id', Auth::id())->orderBy('created_at', 'desc')->limit(2)->get();
 
         return inertia::render('Gemini', [
             'conversation' => $conversations

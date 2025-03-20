@@ -1,14 +1,26 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { ref } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import MarkdownIt from 'markdown-it';
 
-defineProps({
+const props = defineProps({
     response: {
         type: String,
         default: null, // Set a default value if the prop is not passed
     },
     conversation: Array,
 });
+
+const md = MarkdownIt();
+
+let parsedConversation = ref([]);
+
+parsedConversation = props.conversation.map(item => ({
+    ...item,
+    parsedContent: md.render(item.message)
+}));
+
 
 // Initialize the form
 const form = useForm({
@@ -74,6 +86,9 @@ const submitForm = () => {
                             <p v-if="response">{{response}}</p>
                         </div>
 
+                        <div>
+                            <div  v-for="message in parsedConversation">{{ message.parsedContent }}</div>
+                        </div>
                         <div>
                             <ul>
                                 <li v-for="message in conversation"

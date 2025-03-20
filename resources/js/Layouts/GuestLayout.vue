@@ -14,7 +14,7 @@ import { Link } from '@inertiajs/vue3';
             src="https://laravel.com/assets/img/welcome/background.svg"
         />
         <div
-            class="mt-6 w-full z-10 overflow-hidden px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
+            class="mt-6 w-full z-10 overflow-hidden pssx-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
         >
             <slot />
         </div>
