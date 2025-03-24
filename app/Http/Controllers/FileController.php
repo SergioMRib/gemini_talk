@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\InvalidBunnyClientException;
 use App\Models\File;
+use App\Services\BunnyTokenGenerationService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -12,11 +13,11 @@ use Inertia\Inertia;
 
 class FileController extends Controller
 {
-    public function create() {
+    public function create(BunnyTokenGenerationService $tokenService) {
 
         $files= File::all();
-        $files = $files->map(function($item) {
-            $item['download_url'] = 'hello';
+        $files = $files->map(function($item) use ($tokenService) {
+            $item['direct_download_url'] = $tokenService->sign_bcdn_url($item->url, "", 3600);
             return $item;
         });
 
@@ -71,7 +72,6 @@ class FileController extends Controller
 
         return back()->with('success', 'File stored successfully');
     }
-
 
     public function destroy(File $file) {
 

@@ -95,6 +95,8 @@ return [
     'bunny-storage' => [
         'access-key' => env('BUNNY_ACCESS_KEY'),
         'storage-zone-name' => env('BUNNY_STORAGE_ZONE_NAME'),
+        'pull-zone-url' => env('BUNNY_PULL_ZONE_URL'),
+        'security-key' => env('BUNNY_PULL_ZONE_SECURITY_KEY'),
     ],
 
 ];

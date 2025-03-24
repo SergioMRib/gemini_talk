@@ -76,7 +76,7 @@ const submitForm = () => {
                                     <p class="text-sm">{{ note.summary }}</p>
                                     <p class="text-sm">{{ note.url }}</p>
                                     <p class="text-xs italic">{{ note.created_at }}</p>
-                                    <a :href="note.download_url" class="text-xs italic">Download</a>
+                                    <a :href="note.direct_download_url" target="_blank" rel="noopener noreferrer" class="text-xs italic mr-2">Download</a>
                                     <Link :href="route('files.destroy', { file: note.id })" method="delete" class="text-xs italic">Destroy</Link>
                                 </li>
                             </ul>
