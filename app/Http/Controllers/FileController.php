@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidBunnyClientException;
 use App\Models\File;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -13,7 +16,7 @@ class FileController extends Controller
 
         $files= File::all();
         $files = $files->map(function($item) {
-            $item['download_url'] = Storage::disk('s3')->temporaryUrl($item->url, now()->addMinutes(15));
+            $item['download_url'] = 'hello';
             return $item;
         });
 
@@ -24,21 +27,47 @@ class FileController extends Controller
     }
 
     public function store(Request $request) {
-        //dd($request->file('file'));
+        // validate that the file exists
+        $request->validate([
+            'file' => 'required',
+        ]);
+        // create storage service
+        $accessKey = config('filesystems.bunny-storage.access-key');
+        $storageZoneName = config('filesystems.bunny-storage.storage-zone-name');
+        try {
 
-        // in .env FILESYSTEM_DISK is set to s3; if not we need to Storage::disk('s3')...
-        $result = Storage::put('my-image.jpg', $request->file('file'));
+            //throw new InvalidBunnyClientException("This is a forced exception");
 
-        if( ! $result) {
+            $client = new \Bunny\Storage\Client($accessKey, $storageZoneName, \Bunny\Storage\Region::FALKENSTEIN);
+        } catch (Exception $e) {
+
+            throw new InvalidBunnyClientException();
+            return back()->with('error', $e->getMessage());
+
+        }
+
+        // create file data
+        $filename = Str::uuid();
+        $extension = $request->file->extension();
+        $filePath = "/" . $filename . '.' . $extension;
+        // store the file
+        $client->upload($request->file->path(), $filePath);
+        // create the local record withe the file's path (uuid now)
+        File::create([
+            'name' => $request->file->getClientOriginalName(),
+            'summary' => 'A dummy summary here',
+            'url' => $filePath,
+        ]);
+
+        // launch the AI job here
+
+
+
+        if(false) {
+            dd("error");
             return back()->with('error', 'Failed to store the file');
         }
-        //dd($result);
 
-        File::create([
-            'name' => 'A name random here',
-            'summary' => 'A dummy summary here',
-            'url' => $result,
-        ]);
 
         return back()->with('success', 'File stored successfully');
     }
@@ -46,7 +75,13 @@ class FileController extends Controller
 
     public function destroy(File $file) {
 
-        Storage::disk('s3')->delete($file->url);
+
+        $accessKey = config('filesystems.bunny-storage.access-key');
+        $storageZoneName = config('filesystems.bunny-storage.storage-zone-name');
+
+        $client = new \Bunny\Storage\Client($accessKey, $storageZoneName, \Bunny\Storage\Region::FALKENSTEIN);
+
+        $client->delete($file->url);
 
         $file->delete();
 
@@ -55,14 +90,19 @@ class FileController extends Controller
 
     public function allFiles() {
 
-        $files = Storage::disk('s3')->allFiles();
+        $accessKey = config('filesystems.bunny-storage.access-key');
+        $storageZoneName = config('filesystems.bunny-storage.storage-zone-name');
 
+        $client = new \Bunny\Storage\Client($accessKey, $storageZoneName, \Bunny\Storage\Region::FALKENSTEIN);
+
+        $files = $client->listFiles('/');
         $seeFiles = true;
         if( $seeFiles) {
             dd($files);
         }
         foreach($files as $file) {
-            Storage::disk('s3')->delete($file);
+
+            dd('update the delete all files here');
         }
         dd($files, "current files:", Storage::disk('s3')->allFiles());
     }

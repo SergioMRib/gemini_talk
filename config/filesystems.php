@@ -56,6 +56,13 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => true,
         ],
+        'bunny' => [
+            'driver'   => 'sftp',
+            'host'     => 'storage.bunnycdn.com',
+            'username' => env('BUNNY_STORAGE_USERNAME'),
+            'password' => env('BUNNY_STORAGE_PASSWORD'),
+            'root'     => env('BUNNY_STORAGE_ZONE'),
+        ],
 
     ],
 
@@ -72,6 +79,22 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bunny storage
+    |--------------------------------------------------------------------------
+    |
+    | This is the storage system used.
+    | It is not a disk for the Starage facade and so is not stored here as a disk
+    | and instead is stored as a standalone option
+    */
+
+    'bunny-storage' => [
+        'access-key' => env('BUNNY_ACCESS_KEY'),
+        'storage-zone-name' => env('BUNNY_STORAGE_ZONE_NAME'),
     ],
 
 ];

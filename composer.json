@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "bunnycdn/storage": "^3.4",
         "google/apiclient": "^2.0",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.9",
@@ -15,6 +16,7 @@
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
+        "buggregator/trap": "^1.13",
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.2",
         "laravel/pint": "^1.13",
