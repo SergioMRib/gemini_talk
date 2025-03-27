@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\InvalidBunnyClientException;
+use App\Jobs\ProcessFileSubmission;
 use App\Models\File;
 use App\Services\BunnyTokenGenerationService;
 use Exception;
@@ -54,13 +55,11 @@ class FileController extends Controller
         // store the file
         $client->upload($request->file->path(), $filePath);
         // create the local record withe the file's path (uuid now)
-        File::create([
+        $file = File::create([
             'name' => $request->file->getClientOriginalName(),
             'summary' => 'A dummy summary here',
             'url' => $filePath,
         ]);
-
-        // launch the AI job here
 
 
 
@@ -69,6 +68,8 @@ class FileController extends Controller
             return back()->with('error', 'Failed to store the file');
         }
 
+        // launch the AI job here
+        ProcessFileSubmission::dispatchAfterResponse($file);
 
         return back()->with('success', 'File stored successfully');
     }

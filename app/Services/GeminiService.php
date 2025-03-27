@@ -55,5 +55,51 @@ class GeminiService
 
         return $text;
     }
+
+
+    /**
+     * Send content to the API
+     *
+     * @param string $text
+     * @return \Illuminate\Http\Client\Response
+     */
+    public function sendFileContent($file, string $text)
+    {
+
+        // Prepare the JSON payload
+        $payload = [
+            'contents' => [
+                [
+                    'parts' => [
+                        [
+                            'inline_data' => [
+                                'mime_type' => 'image/jpeg',
+                                'data' => $file
+                            ]
+                        ],
+                        [
+                            'text' => $text
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        // USING GUZZLE HHTP
+        $client = new Client();
+//dd(config('services.gemini.api_key'), $this->apiUrl);
+        $response = $client->post($this->apiUrl, [
+            'query' => ['key' => config('services.gemini.api_key')],
+            'json' => $payload // Payload to send to the API
+        ]);
+
+//dd($response);
+        // Decode the JSON response into an associative array
+        $responseData = json_decode($response->getBody()->getContents(), true);
+
+        // Navigate through the array to access the 'text' field
+        $text = $responseData['candidates'][0]['content']['parts'][0]['text'];
+        return $text;
+    }
 }
 

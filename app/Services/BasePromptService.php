@@ -92,8 +92,15 @@ And here is the question: $question
 ";
 
 
-    return $text;
+        return $text;
     }
 
+    public function buildPromptForFileProcessing()
+    {
+        $text = "I'm sending an image. Take look at it and come up with a max 4 word name and a max 1000 char summary. responde with a json format like this:
+{\"name\": \"Example Name\", \"summary\": \"This is a sample summary.\"}";
+
+        return $text;
+    }
 }
 
