@@ -50,7 +50,8 @@ class GeminiController extends Controller
         ]);
 
         // Send the request using the service
-        $response = $this->geminiService->sendContent($request->question);
+        $responseData = $this->geminiService->sendContent($request->question);
+        $response = $responseData['text'];
 
         Conversation::create([
             'message' => $response,
@@ -76,7 +77,8 @@ class GeminiController extends Controller
         ]);
 
         // Send the request using the service
-        $response = $this->geminiService->sendContent($basePromptService->getPrompt() . " " . $request->question);
+        $responseData = $this->geminiService->sendContent($basePromptService->getPrompt() . " " . $request->question);
+        $response = $responseData['text'];
 
         $start = strpos($response, '{');
         $end = strpos($response, '}');
@@ -99,12 +101,16 @@ class GeminiController extends Controller
 
         AskGeminiLog::create([
             'log_entry' => $request->question,
-            'from_human' => true
+            'from_human' => true,
+            'token_count' => $responseData['token_count'],
+            'total_token_count' => $responseData['total_token_count'],
         ]);
 
         AskGeminiLog::create([
             'log_entry' => $json,
-            'from_human' => false
+            'from_human' => false,
+            'token_count' => $responseData['candidates_token_count'],
+            'total_token_count' => $responseData['total_token_count'],
         ]);
 
         return redirect()->back()->with('success', 'Response created');

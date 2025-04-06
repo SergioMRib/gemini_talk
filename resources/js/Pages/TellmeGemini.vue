@@ -8,6 +8,7 @@ const props = defineProps({
         type: String,
         required: false
     },
+    total_token_count: Number
 });
 // Initialize the form
 const form = useForm({
@@ -84,6 +85,7 @@ const submitForm = () => {
 
                         </div>
 
+                        <p v-show="total_token_count">{{ 'Total tokens: ' + total_token_count }}</p>
                         <ul>
                             <li v-for="response, index in responsesArray" :key="index">
                                 {{ index }} - {{response}}

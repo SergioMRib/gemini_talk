@@ -89,7 +89,14 @@ const submitForm = () => {
                             <p class="text-sm py-3 font-semibold pl-4 pr-3 sm:pl-6 text-left">Interaction logs</p>
                             <ul>
                                 <li v-for="note in logs" :key="note.id" class=" py-2  pl-4 pr-3 sm:pl-6 text-left">
-                                    <span class="text-sm">{{ note.from_human ? 'Human' : 'Gemini' }}</span>
+                                    <span class="text-sm">
+                                        {{ note.from_human ? 'Human' : 'Gemini' }}
+                                    </span>
+                                    <div class="inline bg-gray-200 p-1 ml-2">
+                                        <span class="text-xs text-cyan-500">{{ note.token_count }}</span>
+                                        /
+                                        <span class="text-xs text-red-500">{{ note.total_token_count }}</span>
+                                    </div>
                                     <p class="font-semibold">{{ note.log_entry }}</p>
                                 </li>
                             </ul>

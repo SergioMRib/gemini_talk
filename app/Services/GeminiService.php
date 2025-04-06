@@ -52,8 +52,18 @@ class GeminiService
 
         // Navigate through the array to access the 'text' field
         $text = $responseData['candidates'][0]['content']['parts'][0]['text'];
+        $token_count = $responseData['usageMetadata']['promptTokenCount'];
+        $candidates_token_count = $responseData['usageMetadata']['candidatesTokenCount'];
+        $total_token_count = $responseData['usageMetadata']['totalTokenCount'];
 
-        return $text;
+//dd($responseData, $token_count, $candidates_token_count, $total_token_count);
+
+        return [
+            'text' => $text,
+            'token_count' => $token_count,
+            'candidates_token_count' => $candidates_token_count,
+            'total_token_count' => $total_token_count,
+        ];
     }
 
 

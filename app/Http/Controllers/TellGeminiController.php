@@ -14,7 +14,8 @@ class TellGeminiController extends Controller
     public function index() {
 
         return Inertia::render('TellmeGemini', [
-            'geminiResponse' => session()->pull('response')
+            'geminiResponse' => session()->pull('response'),
+            'total_token_count' => session()->pull('total_token_count')
         ]);
     }
 
@@ -23,9 +24,11 @@ class TellGeminiController extends Controller
         $completePrompt = $basePromptService->buildPromptTellMeGemini(Note::all()->toArray(), AskGeminiLog::where('from_human', 0)->get()->toArray(), $request->question);
 
         // Send the request using the service
-        $response = $geminiService->sendContent($completePrompt);
+        $responseData = $geminiService->sendContent($completePrompt);
+        $response = $responseData['text'];
 
         session()->put('response',$response);
+        session()->put('total_token_count',$responseData['total_token_count']);
         return redirect()->back();
     }
 }
