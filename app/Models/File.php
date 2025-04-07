@@ -11,4 +11,8 @@ class File extends Model
         'summary',
         'url'
     ];
+
+    protected $casts = [
+        'is_processed' => 'boolean',
+    ];
 }

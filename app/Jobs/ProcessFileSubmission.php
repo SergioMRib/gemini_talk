@@ -58,7 +58,7 @@ Log::info('Content type is: '. $content_type);
         Log::info($this->file->name);
 
         // send the file to gemini
-        if (in_array($content_type, ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/tiff'])) {
+        if (in_array($content_type, ['image/jpeg', 'image/png',  'image/webp'])) {
             $responseText = $geminiService->sendFileContent($encodedFileContent, $basePromptService->buildPromptForFileProcessing());
 
             $start = strpos($responseText, '{');
@@ -67,7 +67,14 @@ Log::info('Content type is: '. $content_type);
             $responseArray = json_decode($json, true);
             $this->file->name = $responseArray['name'];
             $this->file->summary = $responseArray['summary'];
+            $this->file->is_processed = true;
             $this->file->save();
+        }
+
+
+        if ($content_type === 'application/pdf') {
+            // Code to execute if the content type is PDF
+            Log::info('This file is a pdf and will be handled here');
         }
 
 

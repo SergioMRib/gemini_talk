@@ -72,7 +72,7 @@ const submitForm = () => {
                             <p class="text-sm py-3 font-semibold pl-4 pr-3 sm:pl-6 text-left">File list ({{files.length}})</p>
                             <ul>
                                 <li v-for="note in files" :key="note.id" class=" py-2  pl-4 pr-3 sm:pl-6 text-left">
-                                    <span class="font-semibold">{{note.name}}</span>
+                                    <span class="font-semibold" :class="{ 'text-red-500': !note.is_processed }">{{note.name}}</span>
                                     <p class="text-sm">{{ note.summary }}</p>
                                     <p class="text-sm">{{ note.url }}</p>
                                     <p class="text-xs italic">{{ note.created_at }}</p>
