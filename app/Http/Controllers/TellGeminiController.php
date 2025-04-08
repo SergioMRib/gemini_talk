@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AskGeminiLog;
+use App\Models\File;
 use App\Models\Note;
 use App\Services\BasePromptService;
 use App\Services\GeminiService;
@@ -21,7 +22,11 @@ class TellGeminiController extends Controller
 
     public function getFromGemini (BasePromptService $basePromptService, GeminiService $geminiService, Request $request) {
 
-        $completePrompt = $basePromptService->buildPromptTellMeGemini(Note::all()->toArray(), AskGeminiLog::where('from_human', 0)->get()->toArray(), $request->question);
+        $completePrompt = $basePromptService->buildPromptTellMeGemini(
+            Note::all()->toArray(),
+            AskGeminiLog::where('from_human', 0)->get()->toArray(),
+            File::all()->toArray(),
+            $request->question);
 
         // Send the request using the service
         $responseData = $geminiService->sendContent($completePrompt);

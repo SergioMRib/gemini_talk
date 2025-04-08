@@ -2,7 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Models\AskGeminiLog;
 use App\Models\File;
+use Smalot\PdfParser\Parser;
 use App\Services\BasePromptService;
 use App\Services\BunnyTokenGenerationService;
 use App\Services\GeminiService;
@@ -69,16 +71,52 @@ Log::info('Content type is: '. $content_type);
             $this->file->summary = $responseArray['summary'];
             $this->file->is_processed = true;
             $this->file->save();
+
+            AskGeminiLog::create([
+                'log_entry' => 'PDF file: ' . $this->file->name,
+                'from_human' => true,
+                'token_count' => 0,
+                'total_token_count' => 0,
+            ]);
+
+            Log::info($responseText);
         }
 
 
         if ($content_type === 'application/pdf') {
             // Code to execute if the content type is PDF
+
+            $parser = new Parser();
+
+            $pdf = $parser->parseContent($fileContent);
+
+            $text = $pdf->getText();
+
+
+            $responseData = $geminiService->sendContent($basePromptService->buildPromptForPdfProcessing($text));
+            $responseText = $responseData['text'];
+            Log::info($responseText);
+
+            $start = strpos($responseText, '{');
+            $end = strpos($responseText, '}');
+            $json = substr($responseText, $start, $end + 1 - $start);
+            $responseArray = json_decode($json, true);
+            $this->file->name = $responseArray['name'];
+            $this->file->summary = $responseArray['summary'];
+            $this->file->is_processed = true;
+            $this->file->save();
+
+            AskGeminiLog::create([
+                'log_entry' => 'PDF file: ' . $this->file->name,
+                'from_human' => true,
+                'token_count' => $responseData['token_count'],
+                'total_token_count' => $responseData['total_token_count'],
+            ]);
+
             Log::info('This file is a pdf and will be handled here');
         }
 
 
-        Log::info($responseText);
 
 
     }

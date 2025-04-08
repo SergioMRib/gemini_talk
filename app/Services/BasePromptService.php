@@ -76,19 +76,30 @@ Here is the user input:
     }
 
 
-    public function buildPromptTellMeGemini(Array $notes, Array $events, string $question) {
+    public function buildPromptTellMeGemini(Array $notes, Array $events, Array $files, string $question) {
 
         $currentDateTime = now();
         $events_json = json_encode($events);
+        $notes_json = json_encode($notes);
+        $files_json = json_encode($files);
 
-        $text = "You are my second brain. I am about to send all data from notes and events that I have in my system. Then I'll send a question.
-    Your job is to read the question and see if any of that information relates to the question. Based on that you will come up with an answer to the question however you see fit but it should as usefull as possible.
+        $text = "You are my second brain. I am about to send all data from notes, events, and pdf files (name and summary) that I have in my system. Then I'll send a question.
+    Your job is to read the question and see if any of that information relates to the question. Based on that you will come up with an answer to the question however you see fit but it should be as usefull as possible. In case of pdf files, state the name of the file as I'll be downloading it.
 For the purpose of this interaction, any additional info that you possess (namely the info used to train you) outside of the provided info is to beignored.
-For any date related question, today is exactly: $currentDateTime, but if the current time is before 3am consider all relative time words like tomorrow, yesterday, in two days as possibly referring to the current day or the next day (as I may be asking before going to sleep).
-Notes and events come right next. They are in json format after json_encode.
+For any date related question, today is exactly: $currentDateTime, but if the current time is before 3am consider all relative time words ( such as tomorrow, yesterday, in two days, etc) as possibly referring to the current day or the next day (as I may be asking before going to sleep).
+Notes, events and files come right next. They are in json format after json_encode.
+
+-- Events --
 $events_json
 
-And here is the question: $question
+-- Notes --
+$notes_json
+
+-- Files --
+$files_json
+
+-- The question I'm sending --
+$question
 ";
 
 
@@ -99,6 +110,15 @@ And here is the question: $question
     {
         $text = "I'm sending an image. Take look at it and come up with a max 4 word name and a max 1000 char summary. responde with a json format like this:
 {\"name\": \"Example Name\", \"summary\": \"This is a sample summary.\"}";
+
+        return $text;
+    }
+
+    public function buildPromptForPdfProcessing( String $pdfContent )
+    {
+        $text = "I'm sending a text that is the pdf text content. Take a look at it and come up with a max 4 word name and a max 1000 char summary. responde with a json format like this:
+{\"name\": \"Example Name\", \"summary\": \"This is a sample summary.\"}
+Here the text goes: " . $pdfContent;
 
         return $text;
     }
