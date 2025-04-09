@@ -66,7 +66,7 @@ class GeminiController extends Controller
         return Inertia::render('AskGemini',
             [
                 'logs' => AskGeminiLog::orderBy('created_at', 'desc')->get(),
-                'notes' => Note::all()
+                'notes' => Note::orderBy('created_at', 'desc')->get()
             ]);
     }
 
@@ -85,6 +85,8 @@ class GeminiController extends Controller
         $json = substr($response, $start, $end + 1 - $start);
         $responseArray = json_decode($json, true);
 //dd($response, $start, $end, $json, json_decode($json, true));
+
+        $responseType = $responseArray['type'];
 
         if($responseArray['type'] == 'note') {
             Note::create($responseArray);
@@ -112,7 +114,10 @@ class GeminiController extends Controller
             'token_count' => $responseData['candidates_token_count'],
             'total_token_count' => $responseData['total_token_count'],
         ]);
-
-        return redirect()->back()->with('success', 'Response created');
+        if($responseType == 'invalid') {
+            return redirect()->back()->with('error', 'Your prompt was considered invalid');
+        }
+        return redirect()->back()->with('success', $responseType . ' created successfully.');
     }
 }
+
