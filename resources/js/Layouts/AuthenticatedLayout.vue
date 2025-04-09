@@ -30,34 +30,34 @@ const showingNavigationDropdown = ref(false);
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('gemini.index')"
-                                    :active="route().current('gemini.index')"
+                                    :href="route('tell.index')"
+                                    :active="route().current('tell.index')"
                                 >
-                                    Gemini
+                                    Ask about my stuff
                                 </NavLink>
                                 <NavLink
                                     :href="route('gemini.create')"
                                     :active="route().current('gemini.create')"
                                 >
-                                    Ask Gemini
+                                    Add note
                                 </NavLink>
                                 <NavLink
-                                    :href="route('tell.index')"
-                                    :active="route().current('tell.index')"
+                                    :href="route('files.create')"
+                                    :active="route().current('files.create')"
                                 >
-                                    Tell me Gemini
+                                    Add file
+                                </NavLink>
+                                <NavLink
+                                    :href="route('gemini.index')"
+                                    :active="route().current('gemini.index')"
+                                >
+                                    Ask gemini
                                 </NavLink>
                                 <NavLink
                                     :href="route('calendar.index')"
                                     :active="route().current('calendar.index')"
                                 >
                                     Calendar
-                                </NavLink>
-                                <NavLink
-                                    :href="route('files.create')"
-                                    :active="route().current('files.create')"
-                                >
-                                    Files
                                 </NavLink>
                             </div>
                         </div>
