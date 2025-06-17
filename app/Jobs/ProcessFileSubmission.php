@@ -34,6 +34,7 @@ class ProcessFileSubmission implements ShouldQueue
 
         // Get the file to be processed
         $file_url = $tokenService->sign_bcdn_url($this->file->url, "", 60); // create the tokenized link for download
+Log::info('File url: ' . $file_url);
 
         $response = Http::get($file_url);    // get the file
 

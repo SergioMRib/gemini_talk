@@ -40,9 +40,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/place-file-form', [FileController::class, 'create'])->name('files.create');
     Route::post('/place-file-form', [FileController::class, 'store'])->name('files.store');
+    Route::patch('/place-file-form{file}/refresh', [FileController::class, 'refresh'])->name('files.refresh');
     Route::delete('/place-file-form/{file}', [FileController::class, 'destroy'])->name('files.destroy');
 
     Route::get('/see-all-files', [FileController::class, 'allFiles'])->name('files.see-all-files');
+
+    Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 });
 
 require __DIR__.'/auth.php';

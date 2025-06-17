@@ -80,6 +80,7 @@ const submitForm = () => {
                             <ul class="">
                                 <li v-for="note in notes" :key="note.id" class=" py-2 font-semibold pl-4 pr-3 sm:pl-6 text-left">
                                     {{ note.title }} <br>
+                                    <p class="text-xs italic">Last updated at {{ note.updated_at }}</p>
                                     <p class="font-light text-sm">{{ note.description }}</p>
                                 </li>
                             </ul>
@@ -98,6 +99,7 @@ const submitForm = () => {
                                         <span class="text-xs text-red-500">{{ note.total_token_count }}</span>
                                     </div>
                                     <p class="font-semibold">{{ note.log_entry }}</p>
+                                    <p class="text-xs italic">Made at {{ note.created_at }}</p>
                                 </li>
                             </ul>
                         </div>

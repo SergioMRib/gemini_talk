@@ -1,7 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { ref } from 'vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, router } from '@inertiajs/vue3';
+import { ArrowPathIcon } from '@heroicons/vue/24/solid'
 
 defineProps({
     files: Array
@@ -24,6 +25,13 @@ const submitForm = () => {
     })
 }
 
+function refreshDescriptive(fileId) {
+    if( confirm('Refresh description and title for this file?') ){
+        router.patch(route('files.refresh', fileId));
+    } else {
+        return;
+    }
+}
 </script>
 
 <template>
@@ -75,9 +83,11 @@ const submitForm = () => {
                                     <span class="font-semibold" :class="{ 'text-red-500': !note.is_processed }">{{note.name}}</span>
                                     <p class="text-sm">{{ note.summary }}</p>
                                     <p class="text-sm">{{ note.url }}</p>
-                                    <p class="text-xs italic">{{ note.created_at }}</p>
+                                    <p class="text-xs italic">Created at {{ note.created_at }}</p>
+                                    <p class="text-xs italic">Last updated at {{ note.updated_at }}</p>
                                     <a :href="note.direct_download_url" target="_blank" rel="noopener noreferrer" class="text-xs italic mr-2">Download</a>
                                     <Link :href="route('files.destroy', { file: note.id })" method="delete" class="text-xs italic">Destroy</Link>
+                                    <ArrowPathIcon class="size-6" @click="refreshDescriptive(note.id)" />
                                 </li>
                             </ul>
                         </div>

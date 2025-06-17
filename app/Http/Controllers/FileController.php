@@ -74,6 +74,13 @@ class FileController extends Controller
         return back()->with('success', 'File stored successfully');
     }
 
+    public function refresh(File $file) {
+        // launch the AI job here
+        ProcessFileSubmission::dispatchAfterResponse($file);
+
+        return back()->with('success', 'Your file is being processed. Wait for a few seconds and refresh the page');
+    }
+
     public function destroy(File $file) {
 
 

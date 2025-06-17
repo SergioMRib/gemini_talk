@@ -20,10 +20,10 @@ import { Head, Link } from '@inertiajs/vue3';
                 <div
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
-                    <Link :href="route('tell.index')" class="block btn btn-info m-5">Ask about your stuff</Link>
-                    <Link :href="route('gemini.create')" class="block btn btn-warning m-5">Note down on gemini</Link>
-                    <Link :href="route('files.create')" class="block btn btn-warning m-5">Save a file</Link>
-                    <Link :href="route('gemini.index')" class="block btn btn-error m-5">Ask any question</Link>
+                    <Link :href="route('tell.index')" class="block btn btn-info m-5 flex">Ask about your stuff</Link>
+                    <Link :href="route('gemini.create')" class="block btn btn-warning m-5 flex">Note down on gemini</Link>
+                    <Link :href="route('files.create')" class="block btn btn-warning m-5 flex">Save a file</Link>
+                    <Link :href="route('gemini.index')" class="block btn btn-error m-5 flex">Ask any question</Link>
                 </div>
             </div>
         </div>
